@@ -17,12 +17,14 @@
     }
     .container {
       text-align: center;
-      background-color: rgba(255,255,255,0.8);
+      background-color: rgba(255,255,255,0.9);
       padding: 30px;
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(0,0,0,0.2);
       animation: fadeIn 1s ease-in-out;
-      max-width: 500px;
+      max-width: 600px;
+      overflow-y: auto;
+      max-height: 90vh;
     }
     h1 {
       font-size: 32px;
@@ -79,12 +81,12 @@
   <div class="container">
     <h1>杰宝节快乐！</h1>
     <p style="margin-top: 10px; font-size: 16px; color: #555;">
-      杰宝在以下礼物里选择一个吧，只能选一个哟。请在做出选择后，将关键词之一通过邮件告知我。
+      杰宝在以下 6 个礼物里选择 **3 个**，请在做出选择后，将关键词之一通过邮件告知我。
     </p>
     <button onclick="showGifts()">点击查看礼物描述</button>
 
     <div class="gift-options" id="gift-options">
-      <div class="gift" onclick="selectGift(0)">
+      <div class="gift" onclick="toggleGift(0)">
         🎁 礼物一：对 zrp 最重要
         <div class="details" id="details-0">
           - 你不会知道你得到了什么<br>
@@ -92,7 +94,7 @@
           - 虚无缥缈
         </div>
       </div>
-      <div class="gift" onclick="selectGift(1)">
+      <div class="gift" onclick="toggleGift(1)">
         🎁 礼物二：和 zrp 最相关
         <div class="details" id="details-1">
           - 英文/中文<br>
@@ -100,7 +102,7 @@
           - 思考
         </div>
       </div>
-      <div class="gift" onclick="selectGift(2)">
+      <div class="gift" onclick="toggleGift(2)">
         🎁 礼物三：最实用的选择
         <div class="details" id="details-2">
           - 实用<br>
@@ -108,24 +110,55 @@
           - 方块
         </div>
       </div>
+      <div class="gift" onclick="toggleGift(3)">
+        🎁 礼物四：最有趣的
+        <div class="details" id="details-3">
+          - 惊喜<br>
+          - 笑声<br>
+          - 意外
+        </div>
+      </div>
+      <div class="gift" onclick="toggleGift(4)">
+        🎁 礼物五：最神秘的
+        <div class="details" id="details-4">
+          - 黑盒子<br>
+          - 猜谜<br>
+          - 未知
+        </div>
+      </div>
+      <div class="gift" onclick="toggleGift(5)">
+        🎁 礼物六：最浪漫的
+        <div class="details" id="details-5">
+          - 爱心<br>
+          - 温柔<br>
+          - 特别的回忆
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
+    const maxSelect = 3;
+    let selectedCount = 0;
+
     function showGifts() {
       document.getElementById("gift-options").style.display = "block";
     }
 
-    function selectGift(index) {
-      const gifts = document.getElementsByClassName("gift");
-      const details = document.getElementsByClassName("details");
+    function toggleGift(index) {
+      const gift = document.getElementsByClassName("gift")[index];
+      const details = document.getElementById(`details-${index}`);
+      const isSelected = gift.classList.contains("selected");
 
-      for (let i = 0; i < gifts.length; i++) {
-        gifts[i].classList.remove("selected");
-        details[i].style.display = "none";
+      if (!isSelected && selectedCount >= maxSelect) {
+        alert(`你最多只能选择 ${maxSelect} 个礼物哦！`);
+        return;
       }
-      gifts[index].classList.add("selected");
-      details[index].style.display = "block";
+
+      gift.classList.toggle("selected");
+      details.style.display = isSelected ? "none" : "block";
+
+      selectedCount += isSelected ? -1 : 1;
     }
   </script>
 </body>
